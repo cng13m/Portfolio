@@ -15,6 +15,7 @@ function ProjectCard({
   onPreview: (project: Project) => void
 }) {
   const hasPreview = project.previewType !== "none"
+  const previewImage = project.previewAssets[0] || project.image
 
   return (
     <motion.article
@@ -25,6 +26,13 @@ function ProjectCard({
       className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
     >
       <div className="relative aspect-video overflow-hidden bg-secondary">
+        {previewImage && (
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-80"
+            style={{ backgroundImage: `url(${previewImage})` }}
+          />
+        )}
+        <div className="absolute inset-0 bg-background/45" />
         <div className="flex h-full items-center justify-center">
           <div className="text-center">
             <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
@@ -122,6 +130,8 @@ function PreviewModal({
   project: Project
   onClose: () => void
 }) {
+  const previewImage = project.previewAssets[0] || project.image
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -165,14 +175,26 @@ function PreviewModal({
 
         <div className="max-h-[70vh] overflow-y-auto">
           {project.previewType === "iframe" && project.liveUrl ? (
-            <div className="relative aspect-video w-full">
-              <iframe
-                src={project.liveUrl}
-                title={`Preview of ${project.title}`}
-                className="h-full w-full border-0"
-                sandbox="allow-scripts allow-same-origin"
-                loading="lazy"
-              />
+            <div>
+              {previewImage && (
+                <div className="relative h-52 w-full overflow-hidden border-b border-border bg-secondary">
+                  <img
+                    src={previewImage}
+                    alt={`${project.title} preview`}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+              <div className="relative aspect-video w-full">
+                <iframe
+                  src={project.liveUrl}
+                  title={`Preview of ${project.title}`}
+                  className="h-full w-full border-0"
+                  sandbox="allow-scripts allow-same-origin"
+                  loading="lazy"
+                />
+              </div>
             </div>
           ) : (
             <div className="p-6">
