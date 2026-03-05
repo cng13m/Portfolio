@@ -14,6 +14,8 @@ function ProjectCard({
   index: number
   onPreview: (project: Project) => void
 }) {
+  const hasPreview = project.previewType !== "none"
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 40 }}
@@ -35,15 +37,17 @@ function ProjectCard({
             <p className="text-xs text-muted-foreground">{project.tech[0]}</p>
           </div>
         </div>
-        <div className="absolute inset-0 flex items-center justify-center bg-background/80 opacity-0 transition-opacity group-hover:opacity-100">
-          <button
-            onClick={() => onPreview(project)}
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-transform hover:scale-105"
-          >
-            <Eye className="h-4 w-4" />
-            Preview
-          </button>
-        </div>
+        {hasPreview && (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/80 opacity-0 transition-opacity group-hover:opacity-100">
+            <button
+              onClick={() => onPreview(project)}
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-transform hover:scale-105"
+            >
+              <Eye className="h-4 w-4" />
+              Preview
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col p-5">
@@ -96,13 +100,15 @@ function ProjectCard({
               Live Demo
             </a>
           )}
-          <button
-            onClick={() => onPreview(project)}
-            className="ml-auto inline-flex items-center gap-1.5 text-xs text-primary transition-colors hover:text-primary/80"
-          >
-            <Eye className="h-3.5 w-3.5" />
-            Preview
-          </button>
+          {hasPreview && (
+            <button
+              onClick={() => onPreview(project)}
+              className="ml-auto inline-flex items-center gap-1.5 text-xs text-primary transition-colors hover:text-primary/80"
+            >
+              <Eye className="h-3.5 w-3.5" />
+              Preview
+            </button>
+          )}
         </div>
       </div>
     </motion.article>
@@ -252,7 +258,7 @@ export function ProjectsSection() {
             Featured work
           </h2>
           <p className="mb-12 max-w-xl text-lg text-muted-foreground">
-            A collection of projects showcasing infrastructure automation, monitoring, and cloud engineering.
+            A collection of selected projects in infrastructure, automation, and web applications.
           </p>
         </motion.div>
 

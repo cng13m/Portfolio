@@ -5,7 +5,7 @@ export interface Project {
   tech: string[]
   githubUrl: string
   liveUrl?: string
-  previewType: "iframe" | "readme"
+  previewType: "iframe" | "readme" | "none"
   previewAssets: string[]
   featured: boolean
   status: "completed" | "in-progress" | "archived"
@@ -14,82 +14,56 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: "cloud-infra-automation",
-    title: "Cloud Infrastructure Automation",
+    id: "terraform-rds",
+    title: "TerraformRDS",
     description:
-      "Terraform modules for provisioning AWS infrastructure including VPCs, EC2 instances, RDS databases, and S3 buckets with automated CI/CD pipelines.",
-    tech: ["Terraform", "AWS", "GitHub Actions", "Bash"],
-    githubUrl: "https://github.com/cng13m/cloud-infra-automation",
-    previewType: "readme",
-    previewAssets: ["/images/projects/cloud-infra.jpg"],
+      "This project deploys a secure AWS environment for PostgreSQL on Amazon RDS with a bastion host for controlled access.",
+    tech: ["Terraform", "AWS", "RDS", "PostgreSQL", "EC2"],
+    githubUrl: "https://github.com/cng13m/TerraformRDS",
+    previewType: "none",
+    previewAssets: [],
     featured: true,
     status: "completed",
     image: "/images/projects/cloud-infra.jpg",
   },
   {
-    id: "docker-monitoring-stack",
-    title: "Docker Monitoring Stack",
+    id: "terraform-eu-demo",
+    title: "TerraformEU-Demo",
     description:
-      "A complete monitoring solution using Prometheus, Grafana, and Alertmanager deployed with Docker Compose. Includes custom dashboards and alert rules.",
-    tech: ["Docker", "Prometheus", "Grafana", "Linux"],
-    githubUrl: "https://github.com/cng13m/docker-monitoring",
-    liveUrl: "https://monitoring-demo.example.com",
+      "This repository is a modular Terraform demo that provisions core AWS infrastructure in eu-central-1.",
+    tech: ["Terraform", "AWS", "VPC", "IAM", "eu-central-1"],
+    githubUrl: "https://github.com/cng13m/TerraformEU-Demo",
+    previewType: "none",
+    previewAssets: [],
+    featured: true,
+    status: "completed",
+    image: "/images/projects/network.jpg",
+  },
+  {
+    id: "relativityx",
+    title: "RelativityX",
+    description:
+      "RelativityX is an interactive web app that brings Einstein's theory of relativity to life in an exciting cosmic adventure.",
+    tech: ["Next.js", "React", "TypeScript", "Vercel"],
+    githubUrl: "https://github.com/cng13m/RelativityX",
+    liveUrl: "https://relativityx.vercel.app/",
     previewType: "iframe",
-    previewAssets: ["/images/projects/monitoring.jpg"],
+    previewAssets: [],
     featured: true,
     status: "completed",
     image: "/images/projects/monitoring.jpg",
   },
   {
-    id: "linux-server-hardening",
-    title: "Linux Server Hardening Scripts",
+    id: "fol-ai",
+    title: "FOL AI",
     description:
-      "Collection of Bash scripts for automated Linux server hardening following CIS benchmarks. Includes firewall configuration, SSH hardening, and audit logging.",
-    tech: ["Bash", "Linux", "Security", "Ansible"],
-    githubUrl: "https://github.com/cng13m/linux-hardening",
-    previewType: "readme",
-    previewAssets: ["/images/projects/linux-hardening.jpg"],
-    featured: true,
-    status: "completed",
-    image: "/images/projects/linux-hardening.jpg",
-  },
-  {
-    id: "ci-cd-pipeline-template",
-    title: "CI/CD Pipeline Template",
-    description:
-      "Reusable GitHub Actions workflow templates for building, testing, and deploying containerized applications to AWS ECS with blue-green deployment strategy.",
-    tech: ["GitHub Actions", "Docker", "AWS ECS", "Bash"],
-    githubUrl: "https://github.com/cng13m/cicd-templates",
-    previewType: "readme",
-    previewAssets: ["/images/projects/cicd.jpg"],
-    featured: false,
-    status: "completed",
-    image: "/images/projects/cicd.jpg",
-  },
-  {
-    id: "network-topology-visualizer",
-    title: "Network Topology Visualizer",
-    description:
-      "A web-based tool for visualizing network topologies. Supports importing configurations from Cisco devices and generating interactive diagrams.",
-    tech: ["TypeScript", "React", "Networking", "Docker"],
-    githubUrl: "https://github.com/cng13m/net-topology",
-    liveUrl: "https://net-topo.example.com",
+      "FOL-AI automatizon mbeshtetjen e klienteve tuaj 24/7. Fol shqip, integrohu me WhatsApp, dhe rriti shitjet me inteligjence artificiale.",
+    tech: ["AI", "Automation", "WhatsApp", "Vercel"],
+    githubUrl: "https://github.com/cng13m/fol-ai",
+    liveUrl: "https://folai.vercel.app/",
     previewType: "iframe",
-    previewAssets: ["/images/projects/network.jpg"],
-    featured: false,
-    status: "in-progress",
-    image: "/images/projects/network.jpg",
-  },
-  {
-    id: "aws-cost-optimizer",
-    title: "AWS Cost Optimizer",
-    description:
-      "Python-based tool that analyzes AWS resource usage and provides cost optimization recommendations. Integrates with AWS Cost Explorer API.",
-    tech: ["Python", "AWS", "Lambda", "CloudWatch"],
-    githubUrl: "https://github.com/cng13m/aws-cost-optimizer",
-    previewType: "readme",
-    previewAssets: ["/images/projects/aws-cost.jpg"],
-    featured: false,
+    previewAssets: [],
+    featured: true,
     status: "completed",
     image: "/images/projects/aws-cost.jpg",
   },
