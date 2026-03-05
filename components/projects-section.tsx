@@ -16,6 +16,7 @@ function ProjectCard({
 }) {
   const hasPreview = project.previewType !== "none"
   const previewImage = project.previewAssets[0] || project.image
+  const hasLiveThumbnail = project.previewType === "iframe" && !!project.liveUrl
 
   return (
     <motion.article
@@ -26,27 +27,45 @@ function ProjectCard({
       className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
     >
       <div className="relative aspect-video overflow-hidden bg-secondary">
-        {previewImage && (
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-80"
-            style={{
-              backgroundImage: `url(${previewImage}), linear-gradient(135deg, rgba(14,165,233,0.35), rgba(59,130,246,0.35), rgba(99,102,241,0.35))`,
-            }}
-          />
+        {hasLiveThumbnail ? (
+          <>
+            <iframe
+              src={project.liveUrl}
+              title={`${project.title} card preview`}
+              className="absolute inset-0 h-full w-full border-0"
+              sandbox="allow-scripts allow-same-origin"
+              loading="lazy"
+              tabIndex={-1}
+            />
+            <div className="absolute inset-0 bg-background/30" />
+          </>
+        ) : (
+          <>
+            {previewImage && (
+              <div
+                className="absolute inset-0 bg-cover bg-center opacity-80"
+                style={{
+                  backgroundImage: `url(${previewImage}), linear-gradient(135deg, rgba(14,165,233,0.35), rgba(59,130,246,0.35), rgba(99,102,241,0.35))`,
+                }}
+              />
+            )}
+            <div className="absolute inset-0 bg-background/45" />
+          </>
         )}
-        <div className="absolute inset-0 bg-background/45" />
-        <div className="flex h-full items-center justify-center">
-          <div className="text-center">
-            <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-              {project.previewType === "iframe" ? (
-                <Globe className="h-6 w-6 text-primary" />
-              ) : (
-                <FileText className="h-6 w-6 text-primary" />
-              )}
+        {!hasLiveThumbnail && (
+          <div className="flex h-full items-center justify-center">
+            <div className="text-center">
+              <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                {project.previewType === "iframe" ? (
+                  <Globe className="h-6 w-6 text-primary" />
+                ) : (
+                  <FileText className="h-6 w-6 text-primary" />
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground">{project.tech[0]}</p>
             </div>
-            <p className="text-xs text-muted-foreground">{project.tech[0]}</p>
           </div>
-        </div>
+        )}
         {hasPreview && (
           <div className="absolute inset-0 flex items-center justify-center bg-background/80 opacity-0 transition-opacity group-hover:opacity-100">
             <button
@@ -180,57 +199,52 @@ function PreviewModal({
 
         <div className="flex-1">
           {showIframe ? (
-            <div className="flex h-full flex-col overflow-hidden">
-              <div className="relative h-48 w-full shrink-0 overflow-hidden border-b border-border bg-secondary">
-                <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={
-                    previewImage
-                      ? {
-                          backgroundImage: `url(${previewImage}), linear-gradient(135deg, rgba(14,165,233,0.35), rgba(59,130,246,0.35), rgba(99,102,241,0.35))`,
-                        }
-                      : {
-                          background:
-                            "linear-gradient(135deg, rgba(14,165,233,0.35), rgba(59,130,246,0.35), rgba(99,102,241,0.35))",
-                        }
-                  }
-                />
-                <div className="absolute inset-0 bg-background/25" />
-              </div>
-              <div className="relative flex-1 bg-secondary/40">
-                {!iframeLoaded && !iframeFailed && (
-                  <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/70">
-                    <p className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
-                      Loading live preview...
-                    </p>
-                  </div>
-                )}
-                {iframeFailed && (
-                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background/85 px-6 text-center">
-                    <p className="text-sm text-muted-foreground">
-                      Live preview could not be embedded.
-                    </p>
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:opacity-90"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                      Open Live Demo
-                    </a>
-                  </div>
-                )}
-                <iframe
-                  src={project.liveUrl}
-                  title={`Preview of ${project.title}`}
-                  className="h-full w-full border-0"
-                  sandbox="allow-scripts allow-same-origin"
-                  loading="lazy"
-                  onLoad={() => setIframeLoaded(true)}
-                  onError={() => setIframeFailed(true)}
-                />
-              </div>
+            <div className="relative h-full bg-secondary/40">
+              {!iframeLoaded && !iframeFailed && (
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background/75">
+                  <div
+                    className="h-36 w-64 rounded-xl border border-border bg-cover bg-center"
+                    style={
+                      previewImage
+                        ? {
+                            backgroundImage: `url(${previewImage}), linear-gradient(135deg, rgba(14,165,233,0.35), rgba(59,130,246,0.35), rgba(99,102,241,0.35))`,
+                          }
+                        : {
+                            background:
+                              "linear-gradient(135deg, rgba(14,165,233,0.35), rgba(59,130,246,0.35), rgba(99,102,241,0.35))",
+                          }
+                    }
+                  />
+                  <p className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
+                    Loading live preview...
+                  </p>
+                </div>
+              )}
+              {iframeFailed && (
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background/85 px-6 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Live preview could not be embedded.
+                  </p>
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:opacity-90"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                    Open Live Demo
+                  </a>
+                </div>
+              )}
+              <iframe
+                src={project.liveUrl}
+                title={`Preview of ${project.title}`}
+                className="h-full w-full border-0"
+                sandbox="allow-scripts allow-same-origin"
+                loading="lazy"
+                onLoad={() => setIframeLoaded(true)}
+                onError={() => setIframeFailed(true)}
+              />
             </div>
           ) : (
             <div className="h-full overflow-y-auto p-6">
